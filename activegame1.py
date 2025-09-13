@@ -123,7 +123,7 @@ def search_game_and_dlc(game_name):
         unwanted_keywords = ["benchmark tool", "prologue", "demo"]
         
         
-        search_url = f"https://store.steampowered.com/a i/storesearch/?term={game_name}&l=english&cc=us"
+        search_url = f"https://store.steampowered.com/api/storesearch/?term={game_name}&l=english&cc=us"
         response = requests.get(search_url)
         response.raise_for_status()
         results = response.json().get('items', [])
@@ -413,6 +413,7 @@ def main():
         print(f"⚠️ Không thể mở Steam: {e}")
 
     input("👉 Nhấn phím bất kỳ để thoát...")
+
 
 if __name__ == "__main__":
     main()
