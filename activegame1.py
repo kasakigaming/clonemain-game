@@ -5,6 +5,7 @@ import requests
 import psutil
 import re
 import sys
+import winreg
 from time import sleep
 
 
@@ -57,17 +58,31 @@ def is_steam_running():
     return False
 
 
+# def find_steam_exe():
+#     print("🔍 Đang tìm steam.exe...")
+#     for drive in string.ascii_uppercase:
+#         drive_path = f"{drive}:\\"
+#         if os.path.exists(drive_path):
+#             for root, dirs, files in os.walk(drive_path):
+#                 if 'steam.exe' in files:
+#                     steam_path = os.path.join(root, 'steam.exe')
+#                     print(f"✅ Tìm thấy steam.exe tại: {steam_path}")
+#                     return steam_path
+#     return None
+
+
 def find_steam_exe():
-    print("🔍 Đang tìm steam.exe...")
-    for drive in string.ascii_uppercase:
-        drive_path = f"{drive}:\\"
-        if os.path.exists(drive_path):
-            for root, dirs, files in os.walk(drive_path):
-                if 'steam.exe' in files:
-                    steam_path = os.path.join(root, 'steam.exe')
-                    print(f"✅ Tìm thấy steam.exe tại: {steam_path}")
-                    return steam_path
-    return None
+    try:
+        registry_path = r"Software\Valve\Steam"
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, registry_path) as key:
+            steam_path, _ = winreg.QueryValueEx(key, "SteamPath")
+            steam_exe = steam_path + r"\steam.exe"
+            print(f"✅ Tìm thấy steam.exe tại: {steam_exe}")
+            return steam_exe
+    except FileNotFoundError:
+        print("❌ Không tìm thấy trong Steam trong resgitry. Có thể bạn chưa cài steam")
+        return None
+
 
 
 def resource_path(relative_path):
