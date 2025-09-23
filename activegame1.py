@@ -76,7 +76,7 @@ def find_steam_exe():
         registry_path = r"Software\Valve\Steam"
         with winreg.OpenKey(winreg.HKEY_CURRENT_USER, registry_path) as key:
             steam_path, _ = winreg.QueryValueEx(key, "SteamPath")
-            steam_exe = steam_path + r"\steam.exe"
+            steam_exe = steam_path + r"/steam.exe"
             print(f"✅ Tìm thấy steam.exe tại: {steam_exe}")
             return steam_exe
     except FileNotFoundError:
